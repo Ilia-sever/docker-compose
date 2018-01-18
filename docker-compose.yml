@@ -1,0 +1,33 @@
+version: '2'
+services:
+    nginx: 
+        build: .
+        container_name: nginx
+        ports:
+            - 8000:80
+            - 443:443
+        volumes:
+            - ./www:/usr/share/nginx/html
+            - ./nginx:/etc/nginx/conf.d
+    php-fpm:
+        image: nanoninja/php-fpm
+        container_name: php-fpm
+        volumes:
+            - ./www:/usr/share/nginx/html
+    mysql:
+        image: mysql
+        container_name: mysql
+        environment:
+            MYSQL_DATABASE: instr
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: test
+            MYSQL_PASSWORD: test
+        ports:
+            - 3306:3306
+    # phpmyadmin:
+    #     image: phpmyadmin/phpmyadmin
+    #     container_name: phpmyadmin
+    #     links:
+    #         - mysql:db
+    #     ports:
+    #         - 8080:80
